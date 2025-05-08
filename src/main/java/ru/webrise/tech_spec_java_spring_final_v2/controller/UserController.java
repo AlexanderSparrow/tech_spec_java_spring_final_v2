@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.webrise.tech_spec_java_spring_final_v2.dto.NewUserDto;
 import ru.webrise.tech_spec_java_spring_final_v2.dto.ResponseUserDto;
-import ru.webrise.tech_spec_java_spring_final_v2.model.User;
+import ru.webrise.tech_spec_java_spring_final_v2.dto.UpdateUserDto;
 import ru.webrise.tech_spec_java_spring_final_v2.service.UserService;
 
 import java.util.List;
@@ -14,12 +14,12 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/usees")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseUserDto createUser(@RequestBody NewUserDto newUserDto) {
+    public ResponseUserDto createUser(@Valid @RequestBody NewUserDto newUserDto) {
         log.info("Получен запрос на создание пользователя: {}", newUserDto);
         return userService.createUser(newUserDto);
     }
@@ -31,9 +31,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseUserDto updateUser(@Valid @RequestBody User newUserDto) {
-        log.info("Получен запрос на обновление пользователя: {}", newUserDto);
-        return userService.updateUser(newUserDto);
+    public ResponseUserDto updateUser(@Valid @RequestBody UpdateUserDto updateUserDto,
+                                      @PathVariable Long id) {
+        log.info("Получен запрос на обновление пользователя: c id {}", id);
+        return userService.updateUser(id, updateUserDto);
     }
 
     @GetMapping("/{id}")

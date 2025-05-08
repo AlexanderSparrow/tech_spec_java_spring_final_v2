@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.webrise.tech_spec_java_spring_final_v2.dto.NewUserDto;
 import ru.webrise.tech_spec_java_spring_final_v2.dto.ResponseUserDto;
+import ru.webrise.tech_spec_java_spring_final_v2.dto.UpdateUserDto;
 import ru.webrise.tech_spec_java_spring_final_v2.mapper.UserMapper;
 import ru.webrise.tech_spec_java_spring_final_v2.model.User;
 import ru.webrise.tech_spec_java_spring_final_v2.repository.UserRepository;
@@ -36,7 +37,10 @@ public class UserService {
         return  userMapper.toDto(userRepository.findById(id).orElseThrow());
     }
 
-    public ResponseUserDto updateUser(@Valid User newUserDto) {
-        return null; //TODO
+    public ResponseUserDto updateUser(Long id, @Valid UpdateUserDto newUserDto) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setName(newUserDto.getName());
+        user.setEmail(newUserDto.getEmail());
+        return userMapper.toDto(userRepository.save(user));
     }
 }

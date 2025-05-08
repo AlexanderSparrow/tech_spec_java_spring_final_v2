@@ -1,21 +1,24 @@
 package ru.webrise.tech_spec_java_spring_final_v2.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Entity
-@Getter
-@Setter
-@ToString
-@Table(name = "subscriptions")
+@Table(name = "subscriptions",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "platform_id"}))
+@Data
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String serviceName;
-    private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "platform_id", nullable = false)
+    private StreamingPlatform platform;
 }
