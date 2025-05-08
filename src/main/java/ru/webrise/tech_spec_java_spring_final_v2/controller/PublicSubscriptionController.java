@@ -19,6 +19,7 @@ public class PublicSubscriptionController {
 
     @GetMapping("/top")
     public List<TopPlatformDto> getTop3 () {
+        log.info("Получение Top 3 подписок на сервисы");
         return subscriptionsService.getTop3Platforms();
     }
 
